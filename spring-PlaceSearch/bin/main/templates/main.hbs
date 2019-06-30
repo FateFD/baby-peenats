@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>장소 찾기 시스템</title>
+    </head>
+    <body>
+        <div class="container-1">
+            <input type="search" id="btn_search" onkeydown="onSearch()">
+        </div>
+    </body>
+</html>
+<script>
+    function onSearch(){
+        if(window.event.keyCode == 13){
+            alert();
+        }
+    }
+</script>

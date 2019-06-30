@@ -1,12 +1,17 @@
 package com.etakhee.searchservice.web;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import com.etakhee.searchservice.domain.accounts.*;
+
+import lombok.*;
 
 @RestController
+@AllArgsConstructor
 public class SearchRestController {
-    @GetMapping("/Hello")
-    public String hello() {
-        return "Hello World!";
+    private AccountsRepository accountRepository;
+    
+    @PostMapping("/accounts")
+    public void createAccount(@RequestBody AccountsSaveRequestDto dto) {
+        accountRepository.save(dto.toEntity());
     }
 }
