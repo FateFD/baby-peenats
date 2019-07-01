@@ -2,28 +2,37 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
-        <title>장소 찾기 시스템</title>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <title>장소 검색</title>
     </head>
     <body>
         <div class="container-1">
-            <input type="search" id="search" onkeydown="onKeyEnter()">
+            <input type="search" id="btn_search">
         </div>
     </body>
 </html>
 <script type="text/javascript">
-    function onKeyEnter(){
-        if(window.event.keyCode == 13){
+$(document).ready(function() {
+
+    $("#btn_search").keydown(function(key) {
+        if (key.keyCode == 13) {
             onSearch();
         }
-    }
+    });
+
     function onSearch(){
-        var data = {
-            keyword: $(#search).val()
-        };
-        $.ajax({
-            type: 'GET',
-            url: '/search',
-            dataType: 'json',
+        jQuery.ajax({
+            type:"GET",
+            url:"/kakaomap_search",
+            dataType:"JSON",
+            success : function(data) {
+            },
+            complete : function(data) {
+            },
+            error : function(xhr, status, error) {
+                alert("에러발생");
+            }
         });
     }
+});
 </script>
