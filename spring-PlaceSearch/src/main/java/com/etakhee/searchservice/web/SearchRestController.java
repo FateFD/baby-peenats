@@ -32,25 +32,25 @@ public class SearchRestController {
         	ResponseEntity response= restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
         	
         	JSONParser jsonParser = new JSONParser();
-        	JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString()); 
+        	JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString());
         	JSONArray docuArray = (JSONArray) jsonObject.get("documents");
         	
         	String data = "data:[";
         	for(int i=0; i<docuArray.size(); i++) {
-        		if(i == docuArray.size()-1) {
-        			data += docuArray.get(i).toString().replace("}}", "}");
-        		}else {
-        			data += docuArray.get(i).toString().replace("}}", "}},");
+        		data += docuArray.get(i).toString();	
+        		if(i < docuArray.size()-1) {
+        			data += ",";
         		}
-        		//data += docuArray.get(i).toString();	
         	}
         	data += "]";
         	
-        	JSONObject rtn = (JSONObject) jsonParser.parse(data);
+//        	JSONParser rtnParser = new JSONParser();
+//        	Object obj = rtnParser.parse(data);
+//        	JSONObject rtnObject = (JSONObject) obj;
+//
+//        	System.out.println(data);
         	
-        	System.out.println(rtn);
-        	
-        	return rtn.toJSONString();
+        	return data;
         	
     	}catch(Exception ex) {
     		System.err.println(ex);
