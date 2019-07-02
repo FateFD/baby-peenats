@@ -2,6 +2,9 @@ package com.etakhee.searchservice.web;
 
 import java.net.URI;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -27,9 +30,31 @@ public class SearchRestController {
         	URI url=URI.create("https://dapi.kakao.com/v2/local/search/address.json?query=" + query); 
         	
         	ResponseEntity response= restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
+        	
+        	JSONParser jsonParser = new JSONParser();
+        	JSONObject jsonObject = (JSONObject) jsonParser.parse(response.getBody().toString()); 
+        	JSONArray docuArray = (JSONArray) jsonObject.get("documents");
+        	
+        	String data = "data:[";
+        	for(int i=0; i<docuArray.size(); i++) {
+        		if(i == docuArray.size()-1) {
+        			data += docuArray.get(i).toString().replace("}}", "}");
+        		}else {
+        			data += docuArray.get(i).toString().replace("}}", "}},");
+        		}
+        		//data += docuArray.get(i).toString();	
+        	}
+        	data += "]";
+        	
+        	JSONObject rtn = (JSONObject) jsonParser.parse(data);
+        	
+        	System.out.println(rtn);
+        	
+        	return rtn.toJSONString();
+        	
     	}catch(Exception ex) {
     		System.err.println(ex);
+    		return null;
     	}
-    	return "111";
     }
 }

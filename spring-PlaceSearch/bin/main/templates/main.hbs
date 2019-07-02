@@ -3,12 +3,25 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
     <head>
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.js"></script>
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/datatables.min.css"/>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/dt/jq-3.3.1/dt-1.10.18/datatables.min.js"></script>
         <title>장소 검색</title>
     </head>
     <body>
         <div class="container-1">
             <input type="search" id="btn_search">
         </div>
+        <div>
+            <table id="local_table" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>주소</th>
+                </tr>
+            </thead>
+        </table>
+        </div>
+    </table>
     </body>
 </html>
 <script type="text/javascript">
@@ -28,12 +41,36 @@ $(document).ready(function() {
                 query: encodeURI($("#btn_search").val())
             },
             dataType:"JSON",
-            success : function(data) {
+            success : function(rtn) {
+                alert(JSON.stringify(rtn));
             },
             complete : function(data) {
             },
             error : function(xhr, status, error) {
                 alert("에러발생");
+            }
+        });
+
+        {{!-- var table = null; 
+        if($.fn.dataTable.isDataTable("#local_table")) {
+            table = $('#local_table').DataTable();
+            table.clear().draw();
+        } --}}
+
+        $('#local_table').DataTable( {
+            processing: true,
+            serverSide: true,
+            ajax: {
+                type: 'GET',
+                url: '/kakaomap_search',
+                data: {
+                    query: encodeURI($('#btn_search').val())
+                },
+                dataType: 'JSON',
+                dataSrc: 'data',
+                columns: [
+                    {'data': 'address_name'}
+                ]
             }
         });
     }
